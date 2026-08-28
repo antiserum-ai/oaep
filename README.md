@@ -1,20 +1,21 @@
 # OAEP
 
-Open attested execution proof. A local receipt that this output came from this model and this code.
+**Open Agent Execution Protocol.** Cryptographic receipts for autonomous AI.
 
-Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Different artifact. Same local-first promise: no login, no hosted judge, no API keys to verify.
+> Verify the agent. Do not trust the operator’s story.
+
+Sentient RFP: [Part Two · 07, Proof an AI Did What It Claims](https://sentient.foundation/product-requests).
 
 **Product:** [PRD.md](PRD.md)
 
-v0 is not implemented yet. The repo is the spec.
+Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Antiserum scans the mix you train on. OAEP proves what an agent actually ran. Same org, different artifact. No shared runtime.
 
-```
+v0 is the spec. Implementation follows the PRD milestones.
+
+```bash
 # later
-oaep prove  --model ./weights --code ./server --in prompt.txt --out receipt.json
 oaep verify receipt.json
 ```
-
-Sentient RFP: [Part Two · 07, Proof an AI Did What It Claims](https://sentient.foundation/product-requests).
 
 ## License
 
