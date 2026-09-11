@@ -12,6 +12,12 @@ Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Antiserum scan
 
 v0 is the spec. Implementation follows the PRD milestones.
 
+**Protocol `oaep/0.1` schemas** (milestone 1):
+
+- [Receipt schema](docs/schema/oaep-receipt.schema.json) — PRD §9
+- [Event schema](docs/schema/oaep-event.schema.json) — PRD §8
+- [Schema notes + examples](docs/schema/README.md)
+
 ```bash
 # later
 oaep verify receipt.json

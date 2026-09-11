@@ -1,0 +1,14 @@
+{
+  "version": "oaep/0.1",
+  "execution_id": "0x01",
+  "agent": {
+    "id": "did:agent:example"
+  },
+  "task": {
+    "commitment": "0x02"
+  },
+  "output": {
+    "commitment": "0x03"
+  },
+  "signature": "0x04"
+}
