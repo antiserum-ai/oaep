@@ -1,0 +1,47 @@
+{
+  "version": "oaep/0.1",
+  "execution_id": "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "agent": {
+    "id": "did:agent:example:research-v1",
+    "version": "1.4.2"
+  },
+  "task": {
+    "commitment": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "models": [
+    {
+      "identity": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "fingerprint": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "version": "sentient-example-0.1"
+    }
+  ],
+  "tools": [
+    {
+      "identity": "0x1111111111111111111111111111111111111111111111111111111111111111",
+      "input_commitment": "0x2222222222222222222222222222222222222222222222222222222222222222",
+      "output_commitment": "0x3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ],
+  "delegations": [
+    {
+      "agent": "did:agent:example:analyst-v1",
+      "receipt": "0x4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  ],
+  "output": {
+    "commitment": "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "execution": {
+    "environment": "example-runtime",
+    "started_at": 1789084800,
+    "completed_at": 1789084860
+  },
+  "proofs": [
+    {
+      "type": "tee",
+      "proof": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  ],
+  "trace_root": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "signature": "0xabcdeffedcbaabcdeffedcbaabcdeffedcbaabcdeffedcbaabcdeffedcbaabcd"
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/antiserum-ai/oaep/raw/main/docs/schema/oaep-event.schema.json",
+  "title": "OAEP execution event",
+  "description": "Draft oaep/0.1 event envelope (PRD §8). Events are committed into a Merkle structure whose root is the receipt trace_root (PRD §10). Payload keys and leaf encoding are unstable. This schema does not implement commitments, Merkle proofs, or a hosted verifier.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "version",
+    "type",
+    "execution_id",
+    "commitment"
+  ],
+  "properties": {
+    "version": {
+      "const": "oaep/0.1",
+      "description": "Protocol version tag. Must be the string oaep/0.1 for this schema."
+    },
+    "type": {
+      "$ref": "#/$defs/eventType"
+    },
+    "execution_id": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Execution this event belongs to. Same value as the parent receipt execution_id."
+    },
+    "event_id": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Optional unique id for this event. Generation method is unstable."
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Order of this event within the execution trace. Unstable: may become a hash-linked predecessor pointer."
+    },
+    "occurred_at": {
+      "$ref": "#/$defs/unixSeconds",
+      "description": "When the event occurred. Optional; clock source is unstable."
+    },
+    "commitment": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Commitment to this event's relevant data (PRD §8). Preimage and hash function are unstable."
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Type-specific event data. Unstable in oaep/0.1 — verifiers MUST NOT require payload keys for Level-0. Use this object for selective-disclosure preimages later, not for raw private prompts (PRD §25)."
+    }
+  },
+  "$defs": {
+    "hexBytes": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]+$",
+      "minLength": 3,
+      "description": "0x-prefixed hex. Length and hash algorithm are not fixed in oaep/0.1."
+    },
+    "unixSeconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Unix timestamp in seconds (UTC)."
+    },
+    "eventType": {
+      "type": "string",
+      "description": "Execution-event types from PRD §8. Additional types require a protocol revision or an explicit extension field (not defined here).",
+      "enum": [
+        "TASK_CREATED",
+        "AGENT_STARTED",
+        "MODEL_INFERENCE_STARTED",
+        "MODEL_INFERENCE_COMPLETED",
+        "TOOL_CALLED",
+        "TOOL_RETURNED",
+        "AGENT_DELEGATED",
+        "AGENT_RESULT_RECEIVED",
+        "POLICY_CHECK",
+        "DATA_ACCESSED",
+        "OUTPUT_GENERATED",
+        "EXECUTION_COMPLETED"
+      ]
+    }
+  }
+}
