@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/antiserum-ai/oaep/raw/main/docs/schema/oaep-receipt.schema.json",
+  "title": "OAEP execution receipt",
+  "description": "Draft oaep/0.1 receipt (PRD §9). Level-0 structural verify: a signed agent claim that this execution occurred. This schema does not implement cryptography, Merkle proofs, TEE/zk verification, a blockchain, or a hosted verifier. Encodings marked unstable may change without a protocol bump until oaep/0.1 freezes.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "version",
+    "execution_id",
+    "agent",
+    "task",
+    "output",
+    "signature"
+  ],
+  "properties": {
+    "version": {
+      "const": "oaep/0.1",
+      "description": "Protocol version tag. Must be the string oaep/0.1 for this schema."
+    },
+    "execution_id": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Unique id for this execution. Typical form is a 0x-prefixed commitment; generation method is unstable."
+    },
+    "agent": {
+      "$ref": "#/$defs/agent",
+      "description": "Executing agent identity (PRD §11). Receipts are signed by this agent."
+    },
+    "task": {
+      "$ref": "#/$defs/task",
+      "description": "Commitment to the task / user intent. Raw prompt is not required (PRD §25)."
+    },
+    "models": {
+      "type": "array",
+      "description": "Models that participated. Empty if none. Item fields beyond identity are unstable (PRD §12).",
+      "items": {
+        "$ref": "#/$defs/model"
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "Tool invocations with input/output commitments (PRD §13). Raw I/O need not be public.",
+      "items": {
+        "$ref": "#/$defs/tool"
+      }
+    },
+    "delegations": {
+      "type": "array",
+      "description": "Child-agent receipts referenced by this parent (PRD §14). Reference encoding is unstable.",
+      "items": {
+        "$ref": "#/$defs/delegation"
+      }
+    },
+    "output": {
+      "$ref": "#/$defs/output",
+      "description": "Commitment to the execution result."
+    },
+    "execution": {
+      "$ref": "#/$defs/executionMeta",
+      "description": "When and where the agent ran. Environment string is unstable."
+    },
+    "proofs": {
+      "type": "array",
+      "description": "Optional attestations / proofs (PRD §15 levels 2–4). Shape is unstable; Level-0 does not require this array.",
+      "items": {
+        "$ref": "#/$defs/proof"
+      }
+    },
+    "trace_root": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Merkle root of the execution-event trace (PRD §10). Hash function and leaf encoding are unstable. Optional for Level-0 structural verify."
+    },
+    "signature": {
+      "$ref": "#/$defs/hexBytes",
+      "description": "Agent signature over the receipt claim (PRD §11). Canonical serialization and signature algorithm are unstable — this schema only requires a non-empty 0x-prefixed hex string."
+    }
+  },
+  "$defs": {
+    "hexBytes": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]+$",
+      "minLength": 3,
+      "description": "0x-prefixed hex. Length and hash algorithm are not fixed in oaep/0.1."
+    },
+    "unixSeconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Unix timestamp in seconds (UTC)."
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Cryptographic agent identity. Preferred form did:agent:… (PRD §11). Other DID methods may appear; method registry is unstable."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Agent software / policy version string. Unstable."
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["commitment"],
+      "properties": {
+        "commitment": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Commitment to task input (for example H(prompt || nonce)). Preimage is not part of the receipt."
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["identity"],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Model identity commitment (hash, manifest digest, or similar). Unstable."
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Optional model fingerprint (e.g. Sentient Model Fingerprinting). Unstable."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Model version or revision label. Unstable."
+        }
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["identity"],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Tool identity commitment."
+        },
+        "input_commitment": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Commitment to tool input. Unstable hash function."
+        },
+        "output_commitment": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Commitment to tool output. Unstable hash function."
+        }
+      }
+    },
+    "delegation": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["agent", "receipt"],
+      "properties": {
+        "agent": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Child agent id (preferred did:agent:…)."
+        },
+        "receipt": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Commitment to (or hash of) the child execution receipt. Inline nested receipts are out of scope for this draft field."
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["commitment"],
+      "properties": {
+        "commitment": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Commitment to the produced output."
+        }
+      }
+    },
+    "executionMeta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "environment": {
+          "type": "string",
+          "description": "Free-form execution environment label (runtime, TEE class, host). Unstable; not an attestation."
+        },
+        "started_at": {
+          "$ref": "#/$defs/unixSeconds"
+        },
+        "completed_at": {
+          "$ref": "#/$defs/unixSeconds"
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Proof / attestation class. Examples from the PRD: tee, remote_attestation, zkml, zkvm, signature, reproducible. Closed enum is deferred; this field is unstable."
+        },
+        "proof": {
+          "description": "Opaque proof or attestation material. Encoding is unstable (string today; structured objects later).",
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
