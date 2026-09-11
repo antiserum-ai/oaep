@@ -17,6 +17,13 @@ v0 is the spec. Implementation follows the PRD milestones.
 oaep verify receipt.json
 ```
 
+## Docs
+
+- [Verification levels](docs/verification-levels.md) — Level 0–4: what each proves / does not prove
+- [Threat model](docs/threat-model.md) — PRD §24 adversaries mapped to mitigations by level
+
+Level 0 is a signed, structural claim. Do not read TEE or zk into it.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
