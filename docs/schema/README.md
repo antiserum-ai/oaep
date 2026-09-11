@@ -29,6 +29,8 @@ PRD §9: “The exact schema will be determined during protocol design.” Treat
 
 **Level-0** ([PRD §15](../../PRD.md#15-verification-levels)) is a structural check plus signature *presence*: this agent claims this execution occurred. Required receipt fields are only `version`, `execution_id`, `agent`, `task`, `output`, and `signature`. `trace_root`, `proofs`, models, tools, and delegations are optional at Level-0.
 
+`oaep verify` loads a packaged copy of `oaep-receipt.schema.json` from `src/oaep/schema/`. Those two files must stay byte-identical. Do not invent a second required set in the package.
+
 This tree is spec-only. It does not implement cryptography, Merkle inclusion, TEE/zk backends, a blockchain, or a hosted verifier.
 
 ## See also

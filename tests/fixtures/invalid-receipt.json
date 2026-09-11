@@ -1,0 +1,21 @@
+{
+  "version": "oaep/9.9",
+  "execution_id": "not-a-commitment",
+  "agent": {
+    "version": "1.0.0"
+  },
+  "task": {},
+  "models": "gpt-4",
+  "tools": [],
+  "delegations": [],
+  "output": {
+    "commitment": "plain-text-output"
+  },
+  "execution": {
+    "environment": "local-dev",
+    "started_at": "yesterday",
+    "completed_at": 0
+  },
+  "proofs": [],
+  "trace_root": "0xabcdef0123456789"
+}

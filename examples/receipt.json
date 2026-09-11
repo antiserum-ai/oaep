@@ -1,0 +1,47 @@
+{
+  "version": "oaep/0.1",
+  "execution_id": "0x4a8f2c1e9b0d7a65f031",
+  "agent": {
+    "id": "did:agent:research-summarizer",
+    "version": "1.4.2"
+  },
+  "task": {
+    "commitment": "0x91c3e0aa12ff0044b8de"
+  },
+  "models": [
+    {
+      "identity": "0x7e11aa00bb22cc33dd44",
+      "fingerprint": "0xdeadbeefcafebabe0123",
+      "version": "sentient-research-8b-q4"
+    }
+  ],
+  "tools": [
+    {
+      "identity": "0x1010aa00bb11cc22",
+      "input_commitment": "0xaaa10001bbb20002",
+      "output_commitment": "0xccc30003ddd40004"
+    }
+  ],
+  "delegations": [
+    {
+      "agent": "did:agent:source-analyst",
+      "receipt": "0x55ee66ff77889900aabb"
+    }
+  ],
+  "output": {
+    "commitment": "0xf00d1eaf2c0de5"
+  },
+  "execution": {
+    "environment": "local-dev",
+    "started_at": 1789131241,
+    "completed_at": 1789131300
+  },
+  "proofs": [
+    {
+      "type": "signature",
+      "proof": "0x1111222233334444aaaabbbbccccdddd"
+    }
+  ],
+  "trace_root": "0xabcdef0123456789",
+  "signature": "0x99887766554433221100ffeeddccbbaa"
+}
