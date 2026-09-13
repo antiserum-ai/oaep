@@ -4,7 +4,7 @@ Source: [PRD §15](../PRD.md#15-verification-levels). Threat mapping: [threat-mo
 
 A verification level is a claim about **what evidence is attached to a receipt**, not a grade of the agent. Higher is stronger only if that level’s mechanism actually verified. A `proofs` field that nobody checked is still Level 0.
 
-v0 of this repo is the spec. The first verifier is Level 0: schema, structure, and (when keys exist) signatures. TEE and zk are PRD milestone 6. Do not treat a `type: "tee"` or `type: "zk"` stub as attestation or a proof.
+v0 of this repo is the spec plus a Level-0 verifier: schema, JCS, and Ed25519. TEE and zk are PRD milestone 6. Do not treat a `type: "tee"` or `type: "zk"` stub as attestation or a proof.
 
 ## Table
 
@@ -44,7 +44,7 @@ What it must not say:
 
 A stolen or malicious agent key signs fiction as easily as fact. Level 0 binds the *story* to a key. It does not audit the story.
 
-The sample CLI in PRD §21 (`TEE Attestation ✓`, `Execution Verified`) is the long-term UX. The first `oaep verify` is structural. Do not copy that mock as the Level 0 contract.
+The sample CLI in PRD §21 (`TEE Attestation ✓`, `Execution Verified`) is the long-term UX. Default `oaep verify` checks schema + Ed25519 and reports **Signed claim is valid**. It must not print “Execution Verified”. Pass `--schema-only` to skip the signature (that is not a signed Level-0 result).
 
 ## Level 1 — Reproducible execution
 

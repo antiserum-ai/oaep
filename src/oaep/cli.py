@@ -17,13 +17,14 @@ EXIT_USAGE = 2
 
 EXIT_CODE_HELP = (
     "Exit codes:\n"
-    "  0  receipt is structurally valid (Level 0)\n"
-    "  1  receipt is structurally invalid\n"
+    "  0  receipt is valid at Level 0\n"
+    "  1  receipt is invalid\n"
     "  2  usage, missing file, or not JSON\n"
     "\n"
-    "Level 0 checks the local receipt against the packaged oaep/0.1 schema.\n"
-    "It does not fetch receipts or schemas, and it does not verify signatures,\n"
-    "TEE attestations, or zk proofs."
+    "Default Level 0 checks the local receipt against the packaged oaep/0.1\n"
+    "schema and verifies the Ed25519 agent signature. It does not fetch\n"
+    "receipts or schemas, and it does not verify TEE attestations or zk proofs.\n"
+    "Pass --schema-only to skip the signature check."
 )
 
 
@@ -66,12 +67,12 @@ def _add_verify(sub: argparse._SubParsersAction) -> None:
     verify_p = sub.add_parser(
         "verify",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        help="structurally verify a local receipt JSON",
+        help="verify a local receipt JSON (schema + Ed25519)",
         description=(
             "Load a local OAEP receipt JSON and validate it against the "
             "packaged oaep/0.1 receipt schema (PRD §9 / docs/schema). "
-            "Prints a Level-0 structural report. Local file only. "
-            "No network. No TEE or zk backends."
+            "Then verify the Ed25519 signature over the canonical receipt "
+            "(docs/canonical.md). Local file only. No network. No TEE or zk."
         ),
         epilog=EXIT_CODE_HELP,
     )
@@ -86,11 +87,16 @@ def _add_verify(sub: argparse._SubParsersAction) -> None:
         dest="as_json",
         help="print the JSON report instead of the text summary",
     )
+    verify_p.add_argument(
+        "--schema-only",
+        action="store_true",
+        help="schema check only; do not verify the agent signature",
+    )
     verify_p.set_defaults(func=_cmd_verify)
 
 
 def _cmd_verify(args: argparse.Namespace) -> int:
-    report = verify_path(args.path)
+    report = verify_path(args.path, schema_only=args.schema_only)
     if args.as_json:
         sys.stdout.write(json.dumps(report.to_json_obj(), indent=2) + "\n")
     else:

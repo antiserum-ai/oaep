@@ -39,5 +39,5 @@ jobs:
         run: make test
       - name: Verify example receipt
         run: oaep verify examples/receipt.json
-      - name: Verify protocol Level-0 minimal receipt
-        run: oaep verify docs/schema/examples/receipt.min.json
+      - name: Verify protocol Level-0 minimal receipt (schema only)
+        run: oaep verify --schema-only docs/schema/examples/receipt.min.json

@@ -1,14 +1,15 @@
 {
   "version": "oaep/0.1",
-  "execution_id": "0x01",
+  "execution_id": "0x75751016752e92bb9826b9a57e6771cbcfa344cfe7f869dfa2bc58b8922dda28",
   "agent": {
-    "id": "did:agent:example"
+    "id": "did:agent:ed25519:66be7e332c7a453332bd9d0a7f7db055f5c5ef1a06ada66d98b39fb6810c473a",
+    "public_key": "0x66be7e332c7a453332bd9d0a7f7db055f5c5ef1a06ada66d98b39fb6810c473a"
   },
   "task": {
-    "commitment": "0x02"
+    "commitment": "0xf0ccb4ab14101631c287e5f5f8a7ac0de9b8710e2e6ddf6849a2724aefdc9795"
   },
   "output": {
-    "commitment": "0x03"
+    "commitment": "0x9bf1d60d93896ab08c127207652fd9681145ed803147e4ad4f0a3a4abc04acf8"
   },
-  "signature": "0x04"
+  "signature": "0x0ab65148252f5d84744b227a4d3402162bd6c475e66fba5cbe6b61c31143fcddd1473ae9af4017165ebc6d6c26782ee7d7a5deeb6d3058489572863a29a62e02"
 }

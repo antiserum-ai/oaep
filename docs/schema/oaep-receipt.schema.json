@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/antiserum-ai/oaep/raw/main/docs/schema/oaep-receipt.schema.json",
   "title": "OAEP execution receipt",
-  "description": "Draft oaep/0.1 receipt (PRD §9). Level-0 structural verify: a signed agent claim that this execution occurred. This schema does not implement cryptography, Merkle proofs, TEE/zk verification, a blockchain, or a hosted verifier. Encodings marked unstable may change without a protocol bump until oaep/0.1 freezes.",
+  "description": "Draft oaep/0.1 receipt (PRD §9). Level-0 is a signed agent claim. Hash, hex, JCS, Ed25519, and Merkle encodings are defined in docs/canonical.md. This schema still accepts any 0x-prefixed hex so older fixtures remain structurally valid. Produced values use SHA-256 (32 bytes) and Ed25519 signatures (64 bytes). This schema does not implement TEE/zk verification, a blockchain, or a hosted verifier.",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -20,7 +20,7 @@
     },
     "execution_id": {
       "$ref": "#/$defs/hexBytes",
-      "description": "Unique id for this execution. Typical form is a 0x-prefixed commitment; generation method is unstable."
+      "description": "Unique id for this execution. Produced values are SHA-256 commitments (docs/canonical.md)."
     },
     "agent": {
       "$ref": "#/$defs/agent",
@@ -68,11 +68,11 @@
     },
     "trace_root": {
       "$ref": "#/$defs/hexBytes",
-      "description": "Merkle root of the execution-event trace (PRD §10). Hash function and leaf encoding are unstable. Optional for Level-0 structural verify."
+      "description": "Merkle root of the execution-event trace (PRD §10). Leaf/node encoding is in docs/canonical.md. Optional for Level-0 schema-only verify."
     },
     "signature": {
       "$ref": "#/$defs/hexBytes",
-      "description": "Agent signature over the receipt claim (PRD §11). Canonical serialization and signature algorithm are unstable — this schema only requires a non-empty 0x-prefixed hex string."
+      "description": "Ed25519 signature over JCS(receipt without signature). Produced values are 64 bytes (0x + 128 hex). See docs/canonical.md. The schema only requires a non-empty 0x-prefixed hex string."
     }
   },
   "$defs": {
@@ -80,7 +80,7 @@
       "type": "string",
       "pattern": "^0x[0-9a-fA-F]+$",
       "minLength": 3,
-      "description": "0x-prefixed hex. Length and hash algorithm are not fixed in oaep/0.1."
+      "description": "0x-prefixed hex. Produced SHA-256 values are 32 bytes; Ed25519 signatures are 64 bytes. See docs/canonical.md. Length is not constrained here so older fixtures remain structurally valid."
     },
     "unixSeconds": {
       "type": "integer",
@@ -95,7 +95,11 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Cryptographic agent identity. Preferred form did:agent:… (PRD §11). Other DID methods may appear; method registry is unstable."
+          "description": "Cryptographic agent identity. This package uses did:agent:ed25519:<hex> (PRD §11). Other DID methods may appear."
+        },
+        "public_key": {
+          "$ref": "#/$defs/hexBytes",
+          "description": "Ed25519 public key, 0x-prefixed hex (32 bytes when produced). Optional if agent.id is did:agent:ed25519:<hex>. See docs/canonical.md."
         },
         "version": {
           "type": "string",
@@ -111,7 +115,7 @@
       "properties": {
         "commitment": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Commitment to task input (for example H(prompt || nonce)). Preimage is not part of the receipt."
+          "description": "Commitment to task input: SHA-256(preimage || nonce). Preimage is not part of the receipt (docs/canonical.md)."
         }
       }
     },
@@ -122,7 +126,7 @@
       "properties": {
         "identity": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Model identity commitment (hash, manifest digest, or similar). Unstable."
+          "description": "Model identity commitment (SHA-256 digest when produced). See docs/canonical.md."
         },
         "fingerprint": {
           "$ref": "#/$defs/hexBytes",
@@ -146,11 +150,11 @@
         },
         "input_commitment": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Commitment to tool input. Unstable hash function."
+          "description": "Commitment to tool input: SHA-256(preimage || nonce)."
         },
         "output_commitment": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Commitment to tool output. Unstable hash function."
+          "description": "Commitment to tool output: SHA-256(preimage || nonce)."
         }
       }
     },
@@ -166,7 +170,7 @@
         },
         "receipt": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Commitment to (or hash of) the child execution receipt. Inline nested receipts are out of scope for this draft field."
+          "description": "SHA-256 of the canonical child receipt (docs/canonical.md). Inline nested receipts are out of scope for this field."
         }
       }
     },
@@ -177,7 +181,7 @@
       "properties": {
         "commitment": {
           "$ref": "#/$defs/hexBytes",
-          "description": "Commitment to the produced output."
+          "description": "Commitment to the produced output: SHA-256(preimage || nonce)."
         }
       }
     },
