@@ -1,47 +1,47 @@
 {
   "version": "oaep/0.1",
-  "execution_id": "0x4a8f2c1e9b0d7a65f031",
+  "execution_id": "0xc440e8152cc7da6218dbdd445b721136c27b839991c103f0d095c5fa123f72a5",
   "agent": {
-    "id": "did:agent:research-summarizer",
+    "id": "did:agent:ed25519:43a72e714401762df66b68c26dfbdf2682aaec9f2474eca4613e424a0fbafd3c",
+    "public_key": "0x43a72e714401762df66b68c26dfbdf2682aaec9f2474eca4613e424a0fbafd3c",
     "version": "1.4.2"
   },
   "task": {
-    "commitment": "0x91c3e0aa12ff0044b8de"
+    "commitment": "0x320cfcca2a295c2625c528ff545bac7c8c88adcfc1ef6730acd7052aa47ec827"
   },
   "models": [
     {
-      "identity": "0x7e11aa00bb22cc33dd44",
-      "fingerprint": "0xdeadbeefcafebabe0123",
+      "identity": "0x1c5e44fe4f7b01c50293d37e341995dac629b88d7d9528539575453d9bd83d39",
+      "fingerprint": "0x1b52ff053c8110ba2c80f9cc93e22a152fec46165d99ebeb4d3d35443ab44232",
       "version": "sentient-research-8b-q4"
     }
   ],
   "tools": [
     {
-      "identity": "0x1010aa00bb11cc22",
-      "input_commitment": "0xaaa10001bbb20002",
-      "output_commitment": "0xccc30003ddd40004"
-    }
-  ],
-  "delegations": [
+      "identity": "0x9c1ea7d9f54d96079f1044f48cd9ce85739dd1133c657c1adf69385609fdec77",
+      "input_commitment": "0x688b6ee7e737f3b31cdeed798e704681925cb905ddd6b389ebb1ddb035bf7662",
+      "output_commitment": "0x6ee62c36b51f589c9a5d4f83a95bcf70bc58c22bc4532f2bbc0bbcebc43d2b79"
+    },
     {
-      "agent": "did:agent:source-analyst",
-      "receipt": "0x55ee66ff77889900aabb"
+      "identity": "0x19cc29542c763c69dfe845be8c3d3bd197189598ef7ec5830ebf0cce4e71c603",
+      "input_commitment": "0x429911791a828b11d6bd2c5b9a8a37068a01ffcb372c5e54bde1863805961e31",
+      "output_commitment": "0x4b01ec41f0adfe1174fd4cc7fb1e3789ee9da0c35b3b1cb9518ad6c5a1934e8d"
+    },
+    {
+      "identity": "0x77de7c490a9f7e44cf981b122897fa7a9f282e708255c1af50681709467b091e",
+      "input_commitment": "0x4f677a880771bef92fd37b654c3826e13963a249b5b0af9c2d893dcde0b81ce5",
+      "output_commitment": "0xe5e769f9e5140a4c3ebe02d1967dd99e4808fbd1acd9962f7529f3d73c8d7df7"
     }
   ],
+  "delegations": [],
   "output": {
-    "commitment": "0xf00d1eaf2c0de5"
+    "commitment": "0x36d08fb02f87674e234076d3a06f63c55af332d180d2a999212f630ce8b79708"
   },
   "execution": {
     "environment": "local-dev",
     "started_at": 1789131241,
-    "completed_at": 1789131300
+    "completed_at": 1789131253
   },
-  "proofs": [
-    {
-      "type": "signature",
-      "proof": "0x1111222233334444aaaabbbbccccdddd"
-    }
-  ],
-  "trace_root": "0xabcdef0123456789",
-  "signature": "0x99887766554433221100ffeeddccbbaa"
+  "trace_root": "0x4ff808af325d1740912e5f605910b120dbf6280ca5197a8543990c12690f62d5",
+  "signature": "0x3dc0ee34bdd85fe34c1c8d4f449ab2ed0544a1315650fa6bc605db01b61d4fe66ea1e1bae6a779c89a56c5c0a8ff82a3809c37525e79458fd8b45a493cf5350f"
 }

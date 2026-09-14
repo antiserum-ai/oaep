@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/antiserum-ai/oaep/raw/main/docs/schema/oaep-event.schema.json",
   "title": "OAEP execution event",
-  "description": "Draft oaep/0.1 event envelope (PRD §8). Events are committed into a Merkle structure whose root is the receipt trace_root (PRD §10). Payload keys and leaf encoding are unstable. This schema does not implement commitments, Merkle proofs, or a hosted verifier.",
+  "description": "Draft oaep/0.1 event envelope (PRD §8). Events are committed into a Merkle structure whose root is the receipt trace_root (PRD §10). Hash, JCS, and leaf encoding: docs/canonical.md. This schema does not implement a hosted verifier.",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -25,7 +25,7 @@
     },
     "event_id": {
       "$ref": "#/$defs/hexBytes",
-      "description": "Optional unique id for this event. Generation method is unstable."
+      "description": "Optional unique id for this event. Produced values are the event nonce as 0x-hex (docs/canonical.md)."
     },
     "seq": {
       "type": "integer",
@@ -38,7 +38,7 @@
     },
     "commitment": {
       "$ref": "#/$defs/hexBytes",
-      "description": "Commitment to this event's relevant data (PRD §8). Preimage and hash function are unstable."
+      "description": "Commitment to this event's payload: SHA-256(JCS(payload) || nonce) (docs/canonical.md)."
     },
     "payload": {
       "type": "object",
@@ -51,7 +51,7 @@
       "type": "string",
       "pattern": "^0x[0-9a-fA-F]+$",
       "minLength": 3,
-      "description": "0x-prefixed hex. Length and hash algorithm are not fixed in oaep/0.1."
+      "description": "0x-prefixed hex. Produced SHA-256 values are 32 bytes (docs/canonical.md)."
     },
     "unixSeconds": {
       "type": "integer",

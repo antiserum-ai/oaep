@@ -35,7 +35,7 @@
   ],
   "delegations": [],
   "output": {
-    "commitment": "0x36d08fb02f87674e234076d3a06f63c55af332d180d2a999212f630ce8b79708"
+    "commitment": "0x36d08fb02f87674e234076d3a06f63c55af332d180d2a999212f630ce8b79700"
   },
   "execution": {
     "environment": "local-dev",

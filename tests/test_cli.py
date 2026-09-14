@@ -7,23 +7,34 @@ from oaep.errors import OaepError
 from oaep.verify import verify_path
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+ROOT = Path(__file__).resolve().parents[1]
 VALID = FIXTURES / "valid-receipt.json"
 INVALID = FIXTURES / "invalid-receipt.json"
+SCHEMA_MIN = ROOT / "docs" / "schema" / "examples" / "receipt.min.json"
 
 
 def test_verify_valid_exits_zero(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["verify", str(VALID)]) == EXIT_VALID
     out = capsys.readouterr().out
-    assert "Structurally valid" in out
+    assert "Signed claim is valid" in out
     assert "Level 0" in out
+    assert "ed25519" in out
     assert "oaep/0.1" in out
 
 
 def test_verify_invalid_exits_nonzero(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["verify", str(INVALID)]) == EXIT_INVALID
     out = capsys.readouterr().out
-    assert "Structurally invalid" in out
+    assert "Signed claim is invalid" in out
     assert "Errors" in out
+
+
+def test_verify_schema_only_unsigned(capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["verify", "--schema-only", str(SCHEMA_MIN)]) == EXIT_VALID
+    out = capsys.readouterr().out
+    assert "Structurally valid" in out
+    assert "schema only" in out
+    assert main(["verify", str(SCHEMA_MIN)]) == EXIT_INVALID
 
 
 def test_verify_missing_exits_usage(capsys: pytest.CaptureFixture[str]) -> None:
@@ -48,6 +59,7 @@ def test_verify_json_flag(capsys: pytest.CaptureFixture[str]) -> None:
     out = capsys.readouterr().out
     assert '"valid": true' in out
     assert '"level": 0' in out
+    assert '"signature_verified": true' in out
 
 
 def test_verify_path_raises_on_missing() -> None:
