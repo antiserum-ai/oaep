@@ -34,6 +34,7 @@ What a verifier may say after a Level 0 check:
 - Required Level 0 fields are present (`version`, `execution_id`, `agent`, commitments, `trace_root`, `signature`, and the rest of the required set).
 - The signature verifies under the stated agent public key / DID.
 - Merkle / commitment structure is internally consistent when the trace is supplied.
+- Each **present local** child listed in `delegations` is checked the same way (schema + Ed25519), and `delegations[].receipt` matches `SHA-256(JCS(child))`. Missing children warn unless `--strict-delegations`. Nested verify is still Level 0.
 
 What it must not say:
 

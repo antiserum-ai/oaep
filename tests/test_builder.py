@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from oaep import verify_inclusion, verify_receipt
+from oaep import child_receipt_commitment, verify_inclusion, verify_receipt
 from oaep.builder import start
 from oaep.demo import build_research_receipt
 from oaep.keys import AgentKey
@@ -24,14 +24,20 @@ def test_round_trip_build_and_verify() -> None:
     execution.model_inference("model-a", b"in", b"out", version="1")
     execution.tool_call("search", b"q", b"hits")
     child = {"version": "oaep/0.1", "execution_id": "0x" + "ee" * 32}
-    execution.add_delegation("did:agent:child", child)
+    execution.add_delegation("did:agent:child", child, path="child.json")
     receipt = execution.complete(b"result")
     report = verify_receipt(receipt)
     assert report.valid, report.errors
     assert receipt["trace_root"].startswith("0x")
     assert len(receipt["models"]) == 1
     assert len(receipt["tools"]) == 1
-    assert len(receipt["delegations"]) == 1
+    assert receipt["delegations"] == [
+        {
+            "agent": "did:agent:child",
+            "receipt": child_receipt_commitment(child),
+            "path": "child.json",
+        }
+    ]
     proof = inclusion_proof(execution.events, 0)
     assert verify_inclusion(execution.events[0], proof, receipt["trace_root"])
 

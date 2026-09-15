@@ -39,5 +39,7 @@ jobs:
         run: make test
       - name: Verify example receipt
         run: oaep verify examples/receipt.json
+      - name: Verify nested delegation fixtures
+        run: oaep verify tests/fixtures/delegations/parent.json
       - name: Verify protocol Level-0 minimal receipt (schema only)
         run: oaep verify --schema-only docs/schema/examples/receipt.min.json

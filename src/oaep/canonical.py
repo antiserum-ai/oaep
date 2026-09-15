@@ -86,6 +86,35 @@ def receipt_signing_payload(receipt: dict[str, Any]) -> bytes:
     return canonical_dumps(body)
 
 
+def child_receipt_commitment(receipt: Any) -> str:
+    """SHA-256 of JCS(child receipt), including ``signature``.
+
+    This is the value stored in ``delegations[].receipt``. It is the hash of
+    the child's canonical bytes, not the child's ``execution_id``.
+    """
+    if not isinstance(receipt, dict):
+        raise OaepError("child receipt must be a JSON object")
+    return to_hex(sha256_digest(canonical_dumps(receipt)))
+
+
+def hex_key(value: str) -> str:
+    """Canonical ``0x`` + lowercase hex, or lowercased text if not valid hex."""
+    try:
+        return to_hex(from_hex(value))
+    except OaepError:
+        return value.lower()
+
+
+def hex_equal(left: str, right: str) -> bool:
+    """Compare two ``0x``-hex strings as bytes (case-insensitive)."""
+    if not isinstance(left, str) or not isinstance(right, str):
+        return False
+    try:
+        return from_hex(left) == from_hex(right)
+    except OaepError:
+        return left.lower() == right.lower()
+
+
 def _serialize(value: Any) -> str:
     if value is None:
         return "null"

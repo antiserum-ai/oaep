@@ -3,9 +3,12 @@ import pytest
 from oaep.canonical import (
     IJSON_INT_MAX,
     canonical_dumps,
+    child_receipt_commitment,
     commit,
     from_hex,
+    hex_equal,
     receipt_signing_payload,
+    sha256_digest,
     to_hex,
 )
 from oaep.errors import OaepError
@@ -60,3 +63,13 @@ def test_hex_roundtrip() -> None:
     raw = bytes.fromhex("deadbeef")
     assert from_hex(to_hex(raw)) == raw
     assert from_hex("0xDEAD") == bytes.fromhex("dead")
+
+
+def test_child_receipt_commitment_is_sha256_of_jcs() -> None:
+    child = {"version": "oaep/0.1", "signature": "0xab", "z": 1}
+    digest = child_receipt_commitment(child)
+    assert digest == to_hex(sha256_digest(canonical_dumps(child)))
+    assert hex_equal(digest, digest.upper().replace("0X", "0x"))
+    mutated = dict(child)
+    mutated["z"] = 2
+    assert child_receipt_commitment(mutated) != digest

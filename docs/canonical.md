@@ -43,6 +43,18 @@ Event `commitment` uses the same construction: `commit(JCS(payload), event_nonce
 
 `execution_id` is `commit(JCS({agent, task}), start_nonce)`.
 
+## Delegation binding
+
+`delegations[].receipt` is the SHA-256 digest of the **child receipt’s canonical JSON** (RFC 8785 JCS of the complete child object, **including** `signature`):
+
+```text
+delegations[].receipt = SHA-256(JCS(child_receipt))
+```
+
+Produced value: `0x` + 64 lowercase hex chars. This is the hash of the child bytes, not the child’s `execution_id`. `Execution.add_delegation` stores this digest. `oaep verify` recomputes it from a local child file and requires a match.
+
+Inline child objects are not supported: `receipt` is hex. Optional `delegations[].path` is a local file hint (absolute, or relative to the parent receipt). `--delegation-dir DIR` maps that hash to `{receipt}.json` or `{receipt without 0x}.json`. Verifiers also look beside the parent for those names. Missing child files warn and continue; `--strict-delegations` fails. No network fetch.
+
 ## Signatures
 
 Algorithm: **Ed25519**.
