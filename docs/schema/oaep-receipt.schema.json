@@ -46,7 +46,7 @@
     },
     "delegations": {
       "type": "array",
-      "description": "Child-agent receipts referenced by this parent (PRD §14). Reference encoding is unstable.",
+      "description": "Child-agent receipts referenced by this parent (PRD §14). delegations[].receipt is SHA-256(JCS(child)) (docs/canonical.md). Children are local files only.",
       "items": {
         "$ref": "#/$defs/delegation"
       }
@@ -170,7 +170,12 @@
         },
         "receipt": {
           "$ref": "#/$defs/hexBytes",
-          "description": "SHA-256 of the canonical child receipt (docs/canonical.md). Inline nested receipts are out of scope for this field."
+          "description": "SHA-256(JCS(child receipt including signature)). This is the hash of the child's canonical bytes, not the child's execution_id. Inline nested receipt objects are not supported. See docs/canonical.md."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional local filesystem path to the child receipt JSON (absolute, or relative to the parent receipt). Never fetched over the network."
         }
       }
     },

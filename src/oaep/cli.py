@@ -22,9 +22,12 @@ EXIT_CODE_HELP = (
     "  2  usage, missing file, or not JSON\n"
     "\n"
     "Default Level 0 checks the local receipt against the packaged oaep/0.1\n"
-    "schema and verifies the Ed25519 agent signature. It does not fetch\n"
-    "receipts or schemas, and it does not verify TEE attestations or zk proofs.\n"
-    "Pass --schema-only to skip the signature check."
+    "schema and verifies the Ed25519 agent signature. Child receipts listed\n"
+    "in delegations are verified the same way when a local file is present\n"
+    "(beside the parent, delegations[].path, or --delegation-dir). Missing\n"
+    "children warn and continue; --strict-delegations fails. It does not\n"
+    "fetch receipts or schemas, and it does not verify TEE attestations or\n"
+    "zk proofs. Pass --schema-only to skip the signature check."
 )
 
 
@@ -72,7 +75,10 @@ def _add_verify(sub: argparse._SubParsersAction) -> None:
             "Load a local OAEP receipt JSON and validate it against the "
             "packaged oaep/0.1 receipt schema (PRD §9 / docs/schema). "
             "Then verify the Ed25519 signature over the canonical receipt "
-            "(docs/canonical.md). Local file only. No network. No TEE or zk."
+            "(docs/canonical.md). When delegations are listed, verify each "
+            "present local child the same way and check "
+            "delegations[].receipt = SHA-256(JCS(child)). Local files only. "
+            "No network. No TEE or zk."
         ),
         epilog=EXIT_CODE_HELP,
     )
@@ -92,11 +98,30 @@ def _add_verify(sub: argparse._SubParsersAction) -> None:
         action="store_true",
         help="schema check only; do not verify the agent signature",
     )
+    verify_p.add_argument(
+        "--delegation-dir",
+        type=Path,
+        metavar="DIR",
+        help=(
+            "local directory mapping delegations[].receipt (hash) to a "
+            "{hash}.json or {hash without 0x}.json child file"
+        ),
+    )
+    verify_p.add_argument(
+        "--strict-delegations",
+        action="store_true",
+        help="fail when a listed child receipt file is missing (default: warn)",
+    )
     verify_p.set_defaults(func=_cmd_verify)
 
 
 def _cmd_verify(args: argparse.Namespace) -> int:
-    report = verify_path(args.path, schema_only=args.schema_only)
+    report = verify_path(
+        args.path,
+        schema_only=args.schema_only,
+        delegation_dir=args.delegation_dir,
+        strict_delegations=args.strict_delegations,
+    )
     if args.as_json:
         sys.stdout.write(json.dumps(report.to_json_obj(), indent=2) + "\n")
     else:

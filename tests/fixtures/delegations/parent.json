@@ -1,0 +1,31 @@
+{
+  "version": "oaep/0.1",
+  "execution_id": "0xbdec72c4838f2801c329ecb64e9d029fcfeb835a4d0b3d7be55f817a243794b7",
+  "agent": {
+    "id": "did:agent:ed25519:bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5",
+    "public_key": "0xbc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5",
+    "version": "0.0.1"
+  },
+  "task": {
+    "commitment": "0x4493035ab44e5fe1b02617e438d6eb5bbbd8f881ab935dcb3c100c1f97dd7563"
+  },
+  "models": [],
+  "tools": [],
+  "delegations": [
+    {
+      "agent": "did:agent:ed25519:4721b5b632272e65a68dda7ac25b4185f8b01916db185c14287db92e2b770fae",
+      "receipt": "0x79d6485a032272f69abb71e45fceca9750f29b73288b20617b61c4992a701d01",
+      "path": "child.json"
+    }
+  ],
+  "output": {
+    "commitment": "0x21dabe38ec42a4aa9c633af8b356f1f59fb9f4d19112dae98ed48fe6cd13dfa7"
+  },
+  "execution": {
+    "environment": "test",
+    "started_at": 1789200100,
+    "completed_at": 1789200105
+  },
+  "trace_root": "0xc9bad59bd81d6dd7bc8b188e953e2f3f2b291dbd4e1288b4237a46fea311d497",
+  "signature": "0x76286585427f22095539e80812a01414d8af6e29ad08fae40546628c2591a5f7d1382447cf04fe44c01be226dad4ee10341c2584c2a862c0f089feaa27c45700"
+}

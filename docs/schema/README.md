@@ -27,7 +27,7 @@ The receipt and event `version` field is the string `oaep/0.1`. That tag is the 
 
 PRD §9: “The exact schema will be determined during protocol design.” Treat these files as the current machine-readable shape, not a frozen standard.
 
-**Level-0** ([PRD §15](../../PRD.md#15-verification-levels), [canonical.md](../canonical.md)) is schema plus a checked Ed25519 signature: this agent claims this execution occurred. Required receipt fields are only `version`, `execution_id`, `agent`, `task`, `output`, and `signature`. `trace_root`, `proofs`, models, tools, and delegations are optional at schema-only Level-0.
+**Level-0** ([PRD §15](../../PRD.md#15-verification-levels), [canonical.md](../canonical.md)) is schema plus a checked Ed25519 signature: this agent claims this execution occurred. Required receipt fields are only `version`, `execution_id`, `agent`, `task`, `output`, and `signature`. `trace_root`, `proofs`, models, tools, and delegations are optional at schema-only Level-0. Present local children in `delegations` are verified the same way; `delegations[].receipt` is `SHA-256(JCS(child))`.
 
 `oaep verify` loads a packaged copy of `oaep-receipt.schema.json` from `src/oaep/schema/`. Those two files must stay byte-identical. Do not invent a second required set in the package.
 

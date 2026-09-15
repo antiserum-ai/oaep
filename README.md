@@ -33,7 +33,7 @@ pip install -e ".[dev]"
 
 ## Verify a receipt
 
-`oaep verify` is **Level 0 — signed**. It loads a local receipt JSON, checks it against the packaged `oaep/0.1` schema, and verifies the Ed25519 signature over RFC 8785 JCS of the receipt with `signature` omitted. It does not fetch receipts or schemas, and it does not verify TEE attestations or zk proofs.
+`oaep verify` is **Level 0 — signed**. It loads a local receipt JSON, checks it against the packaged `oaep/0.1` schema, and verifies the Ed25519 signature over RFC 8785 JCS of the receipt with `signature` omitted. When `delegations` are listed, it verifies each **present local** child the same way and checks that `delegations[].receipt` is `SHA-256(JCS(child))` (including the child’s signature). It does not fetch receipts or schemas, and it does not verify TEE attestations or zk proofs.
 
 ```bash
 oaep verify examples/receipt.json
@@ -70,6 +70,14 @@ Invalid fixture (exits 1):
 
 ```bash
 oaep verify tests/fixtures/invalid-receipt.json
+```
+
+Nested child receipts (local files only). The verifier looks beside the parent, at optional `delegations[].path`, and in `--delegation-dir` for `{receipt}.json` or `{receipt without 0x}.json`. Missing children warn and continue; `--strict-delegations` fails.
+
+```bash
+oaep verify tests/fixtures/delegations/parent.json
+oaep verify --delegation-dir tests/fixtures/delegations tests/fixtures/delegations/parent.json
+oaep verify --strict-delegations tests/fixtures/delegations/parent.json
 ```
 
 ## Build a receipt

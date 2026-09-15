@@ -125,7 +125,7 @@ Runtime swaps the model after identity is declared. Same mitigations as “claim
 
 Parent cites a child receipt that is fake, unsigned, or for a different task.
 
-- **L0:** Verifier must load the child receipt, check its signature, and check that the parent’s `delegations[].receipt` matches. A parent can still cite a *real* child from another task unless task binding is checked.
+- **L0:** `oaep verify` loads each **local** child file, checks its signature, and checks that the parent’s `delegations[].receipt` equals `SHA-256(JCS(child))` (docs/canonical.md). Missing children warn by default. A parent can still cite a *real* child from another task unless task binding is checked.
 - **L1+:** Child verified at its own level; parent–child task binding replayed / attested / proved.
 
 ### Tamper with metadata

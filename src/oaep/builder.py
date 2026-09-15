@@ -8,9 +8,9 @@ from typing import Any, Callable, Never
 from oaep.canonical import (
     as_bytes,
     canonical_dumps,
+    child_receipt_commitment,
     commit,
     generate_nonce,
-    sha256_digest,
     sha256_hex,
     to_hex,
 )
@@ -136,12 +136,20 @@ class Execution:
         self.emit(EventType.TOOL_CALLED, {"tool": tool})
         self.emit(EventType.TOOL_RETURNED, {"tool": tool})
 
-    def add_delegation(self, agent_id: str, child_receipt: dict[str, Any]) -> None:
-        receipt_hex = to_hex(sha256_digest(canonical_dumps(child_receipt)))
-        self.emit(
-            EventType.AGENT_DELEGATED,
-            {"agent": agent_id, "receipt": receipt_hex},
-        )
+    def add_delegation(
+        self,
+        agent_id: str,
+        child_receipt: dict[str, Any],
+        *,
+        path: str | None = None,
+    ) -> None:
+        payload: dict[str, Any] = {
+            "agent": agent_id,
+            "receipt": child_receipt_commitment(child_receipt),
+        }
+        if path is not None:
+            payload["path"] = path
+        self.emit(EventType.AGENT_DELEGATED, payload)
 
     def complete(self, output: bytes | str) -> dict[str, Any]:
         if self._completed is not None:
@@ -202,7 +210,11 @@ class Execution:
                 agent_id = payload.get("agent")
                 receipt = payload.get("receipt")
                 if isinstance(agent_id, str) and isinstance(receipt, str):
-                    self._delegations.append({"agent": agent_id, "receipt": receipt})
+                    entry: dict[str, Any] = {"agent": agent_id, "receipt": receipt}
+                    path = payload.get("path")
+                    if isinstance(path, str) and path:
+                        entry["path"] = path
+                    self._delegations.append(entry)
             case "trace":
                 return
             case _:
