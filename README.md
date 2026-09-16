@@ -6,7 +6,7 @@
 
 Sentient RFP: [Part Two · 07, Proof an AI Did What It Claims](https://sentient.foundation/product-requests).
 
-**Product:** [PRD.md](PRD.md)
+**Product:** [PRD.md](PRD.md) · **Site:** [antiserum-ai.github.io/oaep](https://antiserum-ai.github.io/oaep/)
 
 Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Antiserum scans the mix you train on. OAEP proves what an agent actually ran. Same org, different artifact. No shared runtime.
 
@@ -127,6 +127,7 @@ Canonical schemas live under [docs/schema/](docs/schema/). Level-0 required rece
 
 ## Docs
 
+- [Public site](https://antiserum-ai.github.io/oaep/) — install, verify, Level-0 bounds
 - [Canonical encoding](docs/canonical.md) — what is hashed and signed
 - [Verification levels](docs/verification-levels.md) — Level 0–4: what each proves / does not prove
 - [Threat model](docs/threat-model.md) — PRD §24 adversaries mapped to mitigations by level

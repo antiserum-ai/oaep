@@ -14,6 +14,8 @@ oaep verify examples/receipt.json
 
 `make ci` is `make lint` plus `make test` (ruff, then pytest). That is what the pull-request workflow runs.
 
+Public docs site (GitHub Pages artifact): `make pages`, then `python3 -m http.server --directory build/pages 8080`. Stdlib builder only. The site does not verify receipts.
+
 Keep the stack small. Level-0 verify stays local: it does not fetch receipts or schemas.
 
 ## Release (PyPI)
