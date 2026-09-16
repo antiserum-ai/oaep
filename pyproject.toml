@@ -35,6 +35,7 @@ dev = [
 oaep = "oaep.cli:entry"
 
 [project.urls]
+Homepage = "https://github.com/antiserum-ai/oaep"
 Repository = "https://github.com/antiserum-ai/oaep"
 Issues = "https://github.com/antiserum-ai/oaep/issues"
 
