@@ -19,17 +19,27 @@ Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Antiserum scan
 
 ## Install
 
-Python 3.11+. Local checkout only.
+Python 3.11+.
 
 ```bash
-pip install -e .
+pip install oaep
 ```
 
-Dev extras (pytest, ruff):
+That exposes the `oaep` command (`python3 -m oaep` also works). No API keys. PyPI is the install source only. Verify stays offline — no network at runtime, no telemetry.
+
+Contributors, from this repo (editable, with test tools):
 
 ```bash
 pip install -e ".[dev]"
 ```
+
+A git install without cloning:
+
+```bash
+pip install "oaep @ git+https://github.com/antiserum-ai/oaep.git"
+```
+
+Release and trusted-publisher steps: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Verify a receipt
 
