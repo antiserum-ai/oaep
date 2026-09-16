@@ -25,7 +25,7 @@ Python 3.11+.
 pip install oaep
 ```
 
-That exposes the `oaep` command (`python3 -m oaep` also works). No API keys. PyPI is the install source only. Verify stays offline — no network at runtime, no telemetry.
+That exposes the `oaep` command (`python3 -m oaep` also works). No API keys. PyPI is the install source only. The CLI stays offline — no network at runtime, no telemetry. `oaep keygen` writes a local Ed25519 AgentKey under `~/.oaep/`.
 
 Contributors, from this repo (editable, with test tools):
 
@@ -40,6 +40,16 @@ pip install "oaep @ git+https://github.com/antiserum-ai/oaep.git"
 ```
 
 Release and trusted-publisher steps: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Agent key
+
+`oaep keygen` generates an Ed25519 keypair locally and prints the `did:agent:ed25519:…` identity. Defaults: `~/.oaep/agent.key` (private seed, `0x` hex) and `~/.oaep/agent.pub` (agent DID). It refuses to overwrite existing files unless `--force`. No upload, no fetch.
+
+```bash
+oaep keygen
+oaep keygen --json
+oaep keygen --private ./agent.key
+```
 
 ## Verify a receipt
 
