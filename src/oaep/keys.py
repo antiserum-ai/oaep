@@ -8,7 +8,12 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import (
     Ed25519PrivateKey,
     Ed25519PublicKey,
 )
-from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    NoEncryption,
+    PrivateFormat,
+    PublicFormat,
+)
 
 from oaep.canonical import from_hex, to_hex
 from oaep.errors import OaepError
@@ -34,6 +39,12 @@ class AgentKey:
         if len(seed) != PRIVATE_KEY_SIZE:
             raise OaepError("Ed25519 private seed must be 32 bytes")
         return cls(Ed25519PrivateKey.from_private_bytes(seed))
+
+    def private_bytes(self) -> bytes:
+        return self._private.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption())
+
+    def private_hex(self) -> str:
+        return to_hex(self.private_bytes())
 
     def public_bytes(self) -> bytes:
         return self._private.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
