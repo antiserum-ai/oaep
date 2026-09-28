@@ -4,11 +4,9 @@
 
 > Verify the agent. Do not trust the operator’s story.
 
-Sentient RFP: [Part Two · 07, Proof an AI Did What It Claims](https://sentient.foundation/product-requests).
-
 **Product:** [PRD.md](PRD.md) · **Site:** [antiserum-ai.github.io/oaep](https://antiserum-ai.github.io/oaep/)
 
-Sister of [antiserum](https://github.com/antiserum-ai/antiserum). Antiserum scans the mix you train on. OAEP proves what an agent actually ran. Same org, different artifact. No shared runtime.
+OAEP proves what an agent actually ran. Same org, different artifact. No shared runtime.
 
 **Protocol `oaep/0.1`:**
 
